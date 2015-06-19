@@ -1,0 +1,92 @@
+int dim = 20; boolean [ ] [ ] cells = new boolean[dim][dim];
+
+void setup() {
+  size(400,400);
+  randomizeCells();  
+  frameRate(12); }
+
+void draw() {
+  background(0);  stroke(0);
+  for (int row = 0; row < dim; row++) {
+    for (int col = 0; col < dim; col++) {
+      if (cells[col][row]) fill(200); else fill(80); 
+      rect (width / dim * col, height / dim * row, width / dim, height / dim);  } } }
+
+void randomizeCells() {
+  for(int row=0; row<dim; row++) {
+    for(int col=0; col<dim; col++) {
+      cells[col][row] = randomBoolean(); } } }
+
+boolean randomBoolean() {
+  float r = random(1000); 
+  if(r>500) return true; return false; } 
+
+void keyReleased() {
+  if(key == ' ') randomizeCells(); }
+
+
+
+jeżeli liczba sąsiadów jest < 3
+i jeżeli liczba sąsiadów > 7
+
+potrzebujemy funkcję sprawdzająca ilość żywych sąsiadów
+zrobimy sobie jakby tablicę nr 2 (zapamiętującą pierwszą tablicę, przeprowadzającą na niej funkcje i zapiującą wyniki tej funkcji w sobie)
+
+
+Gotowy program:
+int dim = 100; // reguluje wielkość komórek
+boolean [ ] [ ] cells = new boolean[dim][dim]; 
+boolean [ ] [ ] temp = new boolean[dim][dim]; // nowa tablica
+
+void setup() {
+  size(500,500);
+  randomizeCells();  
+  frameRate(12); } // czestotliwosc pokoleń
+
+void draw() {
+  updateCells();
+  background(0);  stroke(0);
+  for (int row = 0; row < dim; row++) {
+    for (int col = 0; col < dim; col++) {
+      if (cells[col][row]) fill(200,30,150); else fill(80); 
+      rect (width / dim * col, height / dim * row, width / dim, height / dim);  } } }
+
+void randomizeCells() {
+  for(int row=0; row<dim; row++) {
+    for(int col=0; col<dim; col++) {
+      cells[col][row] = randomBoolean(); } } }
+
+int liczbaSasiadow(int col, int row) {
+  int wynik = 0;
+  if(pobierzZawartosc(col-1,row-1)) wynik +=1; // to jest to samo co -> wynik = wynik + 1
+   if(pobierzZawartosc(col ,row-1)) wynik +=1;
+    if(pobierzZawartosc(col+1,row-1)) wynik +=1;
+     if(pobierzZawartosc(col-1,row )) wynik +=1;
+      if(pobierzZawartosc(col+1,row )) wynik +=1;
+       if(pobierzZawartosc(col-1,row+1)) wynik +=1;
+        if(pobierzZawartosc(col ,row+1)) wynik +=1;
+         if(pobierzZawartosc(col+1,row+1)) wynik +=1;
+  return wynik;
+}
+
+boolean pobierzZawartosc(int col, int row) {
+ if(col < 0 || col >= dim || row < 0 || row >= dim) return false; // || to znak alternatywy
+  
+ return cells[row][col]; 
+}
+
+boolean randomBoolean() {
+  float r = random(1000); 
+  if(r>500) return true; return false; } 
+  
+void updateCells() {
+int n = 0;
+  for (int row = 0; row < dim; row++) {
+  for (int col = 0; col < dim; col++) {
+    n = liczbaSasiadow(col,row);
+      if(n > 3 && n < 7) temp[col][row] = true; else temp[col][row] = false; } }  
+  arrayCopy(temp, cells);
+}
+
+void keyReleased() {
+  if(key == ' ') randomizeCells(); }
