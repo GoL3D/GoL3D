@@ -1,87 +1,116 @@
+int bok = 20;
+boolean [][][] widok = new boolean [bok][bok][bok];
+boolean [][][] brudnopis = new boolean [bok][bok][bok];
 
-int dim = 10;
-boolean [ ] [ ] [ ]cells = new boolean[dim][dim][dim]; 
-boolean [ ] [ ] [ ]temp = new boolean[dim][dim][dim];
 
-void setup() {
-  size(700,700,P3D);
-  randomizeCells();  }
-
-void draw() {
-  background(32,32,32);  
-  stroke(255);
-  for (int row = 0; row < dim; row++) { 
-   for (int col = 0; col < dim; col++) {
-      for (int dep = 0; dep < dim; dep++) {
-     if (cells[col][row][dep]) fill(200,30,150); else fill(80); 
-     pushMatrix();
-     translate(20,20,20);
-      rotateY(0.5*mouseY);
-      rotateX(0.5*mouseX);
-      rotateZ(0.5);
-      box(width/dim*col, width/dim*row, width/dim*dep); 
-    popMatrix();
-  }}}} // może box jest źle opisany?
-
-void randomizeCells() {
-  for(int row=0; row<dim; row++) {
-    for(int col=0; col<dim; col++) {
-      for(int dep=0; dep<dim; dep++) { 
-      cells[col][row][dep] = randomBoolean(); } } } } 
-
-boolean randomBoolean() {
-  float r = random(1000); 
-  if(r>500) return true; return false; }
-
-int liczbaSasiadow(int col, int row, int dep) {
-  int wynik = 0;
-
-  if(pobierzZawartosc(col-1,row,dep)) wynik +=1;
-   if(pobierzZawartosc(col-1,row-1,dep)) wynik +=1;
-    if(pobierzZawartosc(col-1,row-1,dep-1)) wynik +=1;
-     if(pobierzZawartosc(col-1,row, dep-1)) wynik +=1;
-      if(pobierzZawartosc(col,row-1,dep)) wynik +=1;
-       if(pobierzZawartosc(col,row-1,dep-1)) wynik +=1;
-        if(pobierzZawartosc(col,row,dep-1)) wynik +=1;
-          if(pobierzZawartosc(col+1,row,dep)) wynik +=1;
-            if(pobierzZawartosc(col+1,row+1,dep)) wynik +=1;
-              if(pobierzZawartosc(col+1,row+1,dep+1)) wynik +=1;
-                if(pobierzZawartosc(col+1,row,dep+1)) wynik +=1;
-                  if(pobierzZawartosc(col,row+1,dep)) wynik +=1;
-                   if(pobierzZawartosc(col,row+1,dep+1)) wynik +=1;  
-                    if(pobierzZawartosc(col,row,dep+1)) wynik +=1;
-                    if(pobierzZawartosc(col+1,row-1,dep)) wynik +=1;
-                    if(pobierzZawartosc(col+1,row-1,dep-1)) wynik +=1;
-                    if(pobierzZawartosc(col+1,row,dep-1)) wynik +=1;
-                    if(pobierzZawartosc(col+1,row-1,dep+1)) wynik +=1;
-                    if(pobierzZawartosc(col+1,row+1,dep-1)) wynik +=1;    
-                    if(pobierzZawartosc(col-1,row+1,dep)) wynik +=1;
-                    if(pobierzZawartosc(col-1,row+1,dep+1)) wynik +=1;
-                    if(pobierzZawartosc(col-1,row,dep+1)) wynik +=1;
-                    if(pobierzZawartosc(col-1,row-1,dep+1)) wynik +=1;
-                    if(pobierzZawartosc(col-1,row+1,dep-1)) wynik +=1;
-                    if(pobierzZawartosc(col,row-1,dep+1)) wynik +=1;         
-                    if(pobierzZawartosc(col,row+1,dep-1)) wynik +=1;         
-                  
-  return wynik;
+void setup () {
+size(800,800,P3D);
+randomizeBox();
+frameRate(10);
 }
 
-boolean pobierzZawartosc(int col, int row, int dep) { //dodałam int dep
- if(col < 0 || col >= dim || row < 0 || row >= dim || dep < 0 || dep >= dim) return false; 
-return cells[row][col][dep]; 
+/* teraz pętla draw, która będzie będzie ogarniała jak ma przerysować 
+brudnopis na widok po zmianie życia w każdym boxie dzięki wynikowi z 
+update(); */
+
+void draw () {
+  update();
+  background(32,32,32);
+  stroke(255);
+ for (int a = 0; a < bok; a++) {
+ for (int b = 0; b < bok; b++) {
+ for (int c = 0; c < bok; c++) {
+   if(brudnopis[a][b][c]) fill(200,30,150); else fill(80); 
+ pushMatrix();
+ translate(400,400,-400);
+ rotateX(0.1*mouseX);
+ rotateY(0.1*mouseY);
+ rotateZ(0.1);
+ box(width/bok*a,width/bok*b,width/bok*c);
+ popMatrix();
+ }}}
+  
+}
+
+//teraz część od randomowego kolorowania boxów
+
+void randomizeBox() {
+ for (int a = 0; a < bok; a++) {
+  for (int b = 0; b < bok; b++) {
+   for (int c = 0; c < bok; c++) {
+    widok[a][b][c] = randomBoolean();
+    
+   }}}}
+    
+boolean randomBoolean() {
+  float r = random(1000);
+  if(r>500) return true; return false; }
+
+ 
+/* badam czy przeżyje sprawdzając ile sąsiadów żyje 
+i czy wystarczająco dużo */
+   
+int ileZywych(int a, int b, int c) {  
+  int wynik = 0;
+    if (jestZywa(a,b,c)) wynik += 1;
+    if (jestZywa(a,b,c-1)) wynik += 1;
+    if (jestZywa(a,b,c+1)) wynik += 1;
+    if (jestZywa(a,b-1,c)) wynik += 1;
+    if (jestZywa(a,b-1,c-1)) wynik += 1;
+    if (jestZywa(a,b-1,c+1)) wynik += 1;
+    if (jestZywa(a,b+1,c)) wynik += 1;
+    if (jestZywa(a,b+1,c-1)) wynik += 1;
+    if (jestZywa(a,b+1,c+1)) wynik += 1;
+    if (jestZywa(a-1,b,c)) wynik += 1;
+    if (jestZywa(a-1,b,c-1)) wynik += 1;
+    if (jestZywa(a-1,b,c+1)) wynik += 1;
+    if (jestZywa(a-1,b-1,c)) wynik += 1;
+    if (jestZywa(a-1,b-1,c-1)) wynik += 1;
+    if (jestZywa(a-1,b-1,c+1)) wynik += 1;
+    if (jestZywa(a-1,b+1,c)) wynik += 1;
+    if (jestZywa(a-1,b+1,c-1)) wynik += 1;
+    if (jestZywa(a-1,b+1,c+1)) wynik += 1;
+    if (jestZywa(a+1,b,c)) wynik += 1;
+    if (jestZywa(a+1,b,c-1)) wynik += 1;
+    if (jestZywa(a+1,b,c+1)) wynik += 1;
+    if (jestZywa(a+1,b-1,c)) wynik += 1;
+    if (jestZywa(a+1,b-1,c-1)) wynik += 1;
+    if (jestZywa(a+1,b-1,c+1)) wynik += 1;
+    if (jestZywa(a+1,b+1,c)) wynik += 1;
+    if (jestZywa(a+1,b+1,c-1)) wynik += 1;
+    if (jestZywa(a+1,b+1,c+1)) wynik += 1;
+    return wynik;
+}
+
+boolean jestZywa(int a, int b, int c) {
+  if(a<0 || a >= bok || b < 0 || b >= bok || c > 700) return false;
+  return brudnopis[a][b][c];
+}
+
+
+boolean czyPrzezyje(int a, int b, int c) {
+  int i = ileZywych(a,b,c);
+  if(i > 5 && i < 15) { 
+     return true;  
+  } else {
+    return false;
+  }
+}
+  
+  
+ void update() {
+    for (int a = 0; a < bok; a++) {
+         for (int b = 0; b < bok; b++) {
+             for (int c = 0; c < bok; c++) {
+                 brudnopis[a][b][b] = czyPrzezyje(a,b,c);
+             }
+        }
+    }
+    arrayCopy(brudnopis, widok);
 }
 
   
-//void updateCells() {
-//int n = 0;
-  //for (int row = 0; row < dim; row++) {
-  //for (int col = 0; col < dim; col++) {
-  //for (int dep = 0; dep < dim; dim++) {
-    //n = liczbaSasiadow(col,row,dep);
-      //if(n > 6 && n < 26) temp[col][row][dep] = true; else temp[col][row][dep] = false; } }  }
-  //arrayCopy(temp, cells);}
-
-//void keyReleased() {
-  //if(key == ' ') randomizeCells(); }
-
+   
+   
+   
 
