@@ -20,7 +20,7 @@ void draw () {
  for (int a = 0; a < bok; a++) {
  for (int b = 0; b < bok; b++) {
  for (int c = 0; c < bok; c++) {
-   if(brudnopis[a][b][c]) fill(200,30,150); else fill(80); 
+   if(widok[a][b][c]) fill(200,30,150); else fill(80); // zmiana arraylisty na "widok", bo przecież mamy widzieć to co się rysuje, brudnopis jest do liczenia
  pushMatrix();
  translate(400,400,-400);
  rotateX(0.1*mouseX);
@@ -38,7 +38,7 @@ void randomizeBox() {
  for (int a = 0; a < bok; a++) {
   for (int b = 0; b < bok; b++) {
    for (int c = 0; c < bok; c++) {
-    widok[a][b][c] = randomBoolean();
+    widok[a][b][c] = randomBoolean(); //wyjściowo widzimy randomowo pokolorowane kostki
     
    }}}}
     
@@ -83,9 +83,9 @@ int ileZywych(int a, int b, int c) {
 }
 
 boolean jestZywa(int a, int b, int c) {
-  if(a<0 || a >= bok || b < 0 || b >= bok || c > 700) return false;
+  if(a<0 || a >= bok || b < 0 || b >= bok || c >=bok || c < 0) return false;
   return brudnopis[a][b][c];
-}
+} // zmieniłam tutaj z c<700 na warunki c>= bok || c<0 i przynajmniej wyświetla i nie krzaczy błędu
 
 
 boolean czyPrzezyje(int a, int b, int c) {
@@ -102,7 +102,7 @@ boolean czyPrzezyje(int a, int b, int c) {
     for (int a = 0; a < bok; a++) {
          for (int b = 0; b < bok; b++) {
              for (int c = 0; c < bok; c++) {
-                 brudnopis[a][b][b] = czyPrzezyje(a,b,c);
+                 brudnopis[a][b][c] = czyPrzezyje(a,b,c); // był błąd i w trzecim [] było "b"
              }
         }
     }
