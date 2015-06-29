@@ -2,7 +2,7 @@ import ddf.minim.*;
 AudioPlayer player;
 Minim minim;
 
-int bok = 20;
+int bok = 5;
 boolean [][][] widok = new boolean [bok][bok][bok];
 boolean [][][] brudnopis = new boolean [bok][bok][bok];
 
@@ -13,7 +13,7 @@ randomizeBox();
 frameRate(10);
 minim =new Minim(this);
 player = minim.loadFile("muzyczka.mp3", 2048);
-player.play(); 
+player.play();
 }
 
 /* teraz pętla draw, która będzie będzie ogarniała jak ma przerysować 
@@ -97,7 +97,7 @@ boolean jestZywa(int a, int b, int c) {
 
 boolean czyPrzezyje(int a, int b, int c) {
   int i = ileZywych(a,b,c);
-  if(i > 5 && i < 15) { 
+  if(i > 5 && i < 9) { 
      return true;  
   } else {
     return false;
@@ -123,5 +123,7 @@ void stop() {
 }
    
    
-   
+   void keyReleased() {
+  if(key == ' ') 
+  setup(); }
 
