@@ -124,6 +124,9 @@ void stop() {
    
    
    void keyReleased() {
+  
   if(key == ' ') 
+  player.close();
+  minim.stop();
   setup(); }
 
