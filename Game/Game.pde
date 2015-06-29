@@ -11,9 +11,9 @@ void setup () {
 size(800,800,P3D);
 randomizeBox();
 frameRate(10);
-minim =new Minim(this);
+/*minim =new Minim(this);
 player = minim.loadFile("muzyczka.mp3", 2048);
-player.play();
+player.play(); */
 }
 
 /* teraz pętla draw, która będzie będzie ogarniała jak ma przerysować 
@@ -45,7 +45,7 @@ void randomizeBox() {
  for (int a = 0; a < bok; a++) {
   for (int b = 0; b < bok; b++) {
    for (int c = 0; c < bok; c++) {
-    widok[a][b][c] = randomBoolean(); //wyjściowo widzimy randomowo pokolorowane kostki
+    brudnopis[a][b][c] = randomBoolean(); //wyjściowo widzimy randomowo pokolorowane kostki
     
    }}}}
     
@@ -116,11 +116,11 @@ boolean czyPrzezyje(int a, int b, int c) {
     arrayCopy(brudnopis, widok);
 }
 
-void stop() {
+/* void stop() {
   player.close();
   minim.stop();
   super.stop();
-}
+} */
    
    
    
