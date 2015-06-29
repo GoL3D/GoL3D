@@ -11,9 +11,9 @@ void setup () {
 size(800,800,P3D);
 randomizeBox();
 frameRate(10);
-/*minim =new Minim(this);
+minim =new Minim(this);
 player = minim.loadFile("muzyczka.mp3", 2048);
-player.play(); */
+player.play(); 
 }
 
 /* teraz pętla draw, która będzie będzie ogarniała jak ma przerysować 
@@ -30,9 +30,9 @@ void draw () {
    if(widok[a][b][c]) fill(200,30,150); else fill(80); // zmiana arraylisty na "widok", bo przecież mamy widzieć to co się rysuje, brudnopis jest do liczenia
  pushMatrix();
  translate(400,400,-400);
- rotateX(0.1*mouseX);
- rotateY(0.1*mouseY);
- rotateZ(0.1);
+ rotateX(0.2*mouseX);
+ rotateY(0.2*mouseY);
+ rotateZ(0.2);
  box(width/bok*a,width/bok*b,width/bok*c);
  popMatrix();
  }}}
@@ -116,11 +116,11 @@ boolean czyPrzezyje(int a, int b, int c) {
     arrayCopy(brudnopis, widok);
 }
 
-/* void stop() {
+void stop() {
   player.close();
   minim.stop();
   super.stop();
-} */
+}
    
    
    
