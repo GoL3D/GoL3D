@@ -1,3 +1,7 @@
+import ddf.minim.*;
+AudioPlayer player;
+Minim minim;
+
 int bok = 20;
 boolean [][][] widok = new boolean [bok][bok][bok];
 boolean [][][] brudnopis = new boolean [bok][bok][bok];
@@ -7,6 +11,9 @@ void setup () {
 size(800,800,P3D);
 randomizeBox();
 frameRate(10);
+minim =new Minim(this);
+player = minim.loadFile("muzyczka.mp3", 2048);
+player.play();
 }
 
 /* teraz pętla draw, która będzie będzie ogarniała jak ma przerysować 
@@ -109,7 +116,11 @@ boolean czyPrzezyje(int a, int b, int c) {
     arrayCopy(brudnopis, widok);
 }
 
-  
+void stop() {
+  player.close();
+  minim.stop();
+  super.stop();
+}
    
    
    
